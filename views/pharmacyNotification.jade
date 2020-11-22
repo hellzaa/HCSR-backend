@@ -1,0 +1,23 @@
+extends layout
+
+block content
+   link(rel="stylesheet", href="../stylesheets/bootstrap.min.css")
+   link(rel="stylesheet", href="../stylesheets/pharmacyInventory.css")
+   link(rel="stylesheet", href="../stylesheets/pharmacy.css")
+   div(id="NameBox")
+   div(id="logo")
+   div(id="navbarbox")
+    div(id="inventoryBox")
+     form(action="/pharmacy/inventory",method="get")
+          input(type="submit",value="Inventory",id="button")
+    div(id="notificationBox")
+     form(action="/pharmacy/notification",method="get")
+          input(type="submit",value="Notification",id="button")
+    div(id="profileBox")   
+     form(action="/pharmacy/profile",method="get")
+          input(type="submit",value="Profile",id="button")
+   //div(id="searchBox")
+   div(id="logo")
+   div(id="NameBox")
+    div(id="pharmacyNameBox")
+       h1=pharmacyName

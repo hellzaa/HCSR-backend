@@ -1,0 +1,37 @@
+extends layout
+
+block content
+  link(rel="stylesheet", href="../stylesheets/updatePharmacyInventory.css")
+  link(rel="stylesheet", href="../stylesheets/pharmacy.css")
+  div(id="NameBox")
+  div(id="logo")
+  div(id="navbarbox")
+   div(id="inventoryBox")
+    form(action="/pharmacy/inventory",method="get")
+          input(type="submit",value="Inventory",id="button")
+   div(id="notificationBox")
+    form(action="/pharmacy/notification",method="get")
+          input(type="submit",value="Notification",id="button")
+   div(id="profileBox")   
+    form(action="/pharmacy/employeeprofile",method="get")
+          input(type="submit",value="Profile",id="button")
+  div(id="updateFormBox")
+    form(action="/pharmacy/addnewmedicine", method="POST")
+      div(id="GenericName")
+       label(for="GenericName") Generic Name
+       input(type="text", placeholder="Generic name", name="GenericName")
+      div(id="TradeName")
+       label(for="TradeName") Trade Name
+       input(type="text", placeholder="Trade Name", name="TradeName")
+      div(id="Dosage")
+       label(for="Dosage") Dosage      
+       input(type="text", placeholder="Dosage", name="Dosage")
+      div(id="Discription")
+       label(for="Description") Description
+       input(type="text", placeholder="Discription", name="Description")
+      div(id="Amount")
+       label(for="Amount") Amount
+       input(type="number", placeholder="Amount", name="Amount")
+      div(id="buttons") 
+       button(type="submit") Add
+    //button(type="submit") Remove

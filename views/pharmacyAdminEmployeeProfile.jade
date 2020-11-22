@@ -1,0 +1,38 @@
+extends layout
+
+block content
+  link(rel="stylesheet", href="../stylesheets/pharmacyEmployeeProfile.css")
+  link(rel="stylesheet", href="../stylesheets/bootstrap.min.css")
+  div(id="addButton", class="form-group pull-right")
+       form(action='/pharmacy/addnewmedicinedata', method='get')
+          input(type="submit", class="btn btn-outline-primary btn-sm m-0 waves-effect" ,value="ADD")
+  div(id="tableBox")
+        table(class="table table-responsive-md table-bordered btn-table results")
+            thead(class="thead-dark")
+               tr
+                 th Number
+                 th First Name
+                 th Last Name
+                 th Username
+                 th Password
+                 th Job Description
+                 th Edit
+                 th Remove
+            tbody
+              -for(var i=0; i< EmployeeData.length ; ++i){
+
+               tr
+                  td=1+i
+                  td=EmployeeData[i].Firstname
+                  td=EmployeeData[i].Lastname
+                  td=EmployeeData[i].Username
+                  td=EmployeeData[i].Password
+                  td=EmployeeData[i].JobDescription
+                  td
+                     form(action='/pharmacy/editmedicinedata', method='get')
+                       input(type="submit", class="btn btn-outline-primary btn-sm m-0 waves-effect" ,value="edit")
+                       
+                  td 
+                     form(action='/pharmacy/removemedicinedata', method='get')
+                       input(type="submit", class="btn btn-outline-primary btn-sm m-0 waves-effect" ,value="Remove")
+               -}

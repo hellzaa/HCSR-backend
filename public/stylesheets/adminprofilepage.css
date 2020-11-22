@@ -1,0 +1,25 @@
+body{
+}
+
+
+#AdminProfileBox {
+background-color: white;
+position: absolute;
+width: 500px;
+height: 400px;
+top: 200px;
+bottom: 0;
+left:0;
+right:0;
+margin: auto;
+border: solid;
+}
+#saveButton{
+background-color: white;
+position: absolute;
+width: 200px;
+height: 50px;
+top: 350px;
+left:200px;
+ 
+}

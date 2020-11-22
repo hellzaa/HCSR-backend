@@ -1,0 +1,74 @@
+body {
+  background-color:white;
+  }
+#welcome{
+color:white;
+text-align: left;
+text-indent: 300px;
+font-family: "Lato";
+font-size: 40px;
+}
+#welcomebox{
+background-color: black;
+position: absolute;
+width: 2000px;
+height: 100px;
+top: 100px;
+left:0;
+}
+#box {
+background-color: black;
+position: absolute;
+width: 2000px;
+height: 300px;
+top: 0;
+left:0;
+}
+#hospitalbox{
+background-color: white;
+position: absolute;
+width: 100px;
+height: 100px;
+top:350px;
+left: 450px;
+
+
+}
+#pharmacybox{
+background-color: white;
+position: absolute;
+width: 100px;
+height: 100px;
+top:350px;
+left: 600px;
+
+
+}
+#labratorybox{
+background-color: white;
+position: absolute;
+width: 100px;
+height: 100px;
+top:350px;
+left: 750px;
+
+
+}
+#buttonPharmacy{
+padding: 32px 16px;
+width: 100px;
+height: 100px;
+background-image: url(/images/home/pharmacy.png);
+}
+#buttonLabratory{
+padding: 32px 16px;
+width: 100px;
+height: 100px;
+background-image: url(/images/home/labratory.png);
+}
+#buttonHospital{
+padding: 32px 16px;
+width: 100px;
+height: 100px;
+background-image: url(/images/home/hospital.png);
+}

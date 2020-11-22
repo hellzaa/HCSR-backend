@@ -1,0 +1,45 @@
+extends layout
+
+block content
+  link(rel="stylesheet", href="../stylesheets/adminprofilepage.css")
+  link(rel="stylesheet", href="../stylesheets/pharmacy.css")
+  link(rel="stylesheet", href="../stylesheets/pharmacyEmployeeProfile.css")
+  div(id="NameBox")
+  div(id="logo")
+  div(id="navbarbox")
+   div(id="inventoryBox")
+    form(action="/pharmacy",method="get")
+          input(type="submit",value="Home",id="button")
+   div(id="notificationBox")
+    form(action="/pharmacy/profile",method="get")
+          input(type="submit",value="Admin Profile",id="button")
+   div(id="profileBox")   
+     form(action="/pharmacy/pharmacyprofile",method="get")
+          input(type="submit",value="Pharmacy Profile",id="button")
+   div(id="employeeBox")   
+      form(action="/pharmacy/employeeprofile",method="get")
+          input(type="submit",value="Employee Profile",id="button")
+
+  div(id="AdminProfileBox")
+                    form(action="/pharmacy/profile", method="POST")
+                      div(id="Firstname")
+                       label(for="Firstname") First Name
+                       input(type="text", value=PharmacyEmployeeData[0].Firstname, name="Firstname")
+                      div(id="Lastname")
+                       label(for="Lastname") Last Name
+                       input(type="text", value=PharmacyEmployeeData[0].Lastname, name="Lastname")
+                      div(id="Username")
+                       label(for="Username") Username     
+                       input(type="text", value=PharmacyEmployeeData[0].Username,name="Username")
+                      div(id="Password")
+                       label(for="Password") Password
+                       input(type="text", value=PharmacyEmployeeData[0].Password, name="Password")
+                      div(id="Pharmacy")
+                       label(for="Pharmacy") Pharmacy
+                       input(type="text", value=PharmacyEmployeeData[0].Pharmacy, name="Pharmacy")
+                      div(id="JD")
+                       label(for="JD") Job Description
+                       input(type="text", value=PharmacyEmployeeData[0].JobDescription, name="JD")
+                      div(id="saveButton") 
+                       button(type="submit") Save
+ 

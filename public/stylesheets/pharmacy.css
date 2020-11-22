@@ -1,0 +1,91 @@
+body {
+  background-color: white;
+}
+#button{
+background-color:yellow;
+width: 200px;
+height: 50px;
+border:solid;
+border-width:0px 0.5px;
+border-color: white;
+}
+.logo{
+height: 25px;
+width:25px;
+border-radius: 50%;
+background-color: green;
+
+}
+
+
+#inventoryBox {
+background-color: white;
+position: absolute;
+width: 50px;
+height: 10px;
+top: 0px;
+left:0px;
+ 
+}
+#notificationBox {
+background-color: white;
+position: absolute;
+width: 50px;
+height: 10px;
+top: 0px;
+left:200px;
+
+
+ 
+}
+#logo{
+background-color: yellow;
+position: absolute;
+width: 100px;
+height: 100px;
+top: 10px;
+left:10px;
+background-image: url(/images/pharmacy/logo.jpg);
+}
+#NameBox {
+background-color: yellow;
+position: absolute;
+width: 1680px;
+height: 120px;
+top: 0px;
+left:120px;
+ 
+}
+
+#pharmacyNameBox {
+background-color: yellow;
+position: absolute;
+width: 500px;
+height: 80px;
+top: 40px;
+left:500px;
+ 
+}
+#profileBox {
+background-color: white;
+position: absolute;
+width: 40px;
+height: 10px;
+top: 0px;
+left:400px;
+ 
+}
+#navbarbox{
+background-color: yellow;
+position: absolute;
+top:120px;
+left:0px;
+width:1800px;
+height:50px;
+border:solid;
+border-color: white;
+border-width:1px;
+}
+#lable{
+color: black;
+}

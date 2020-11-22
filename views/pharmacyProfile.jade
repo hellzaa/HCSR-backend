@@ -1,0 +1,51 @@
+extends layout
+
+block content
+  link(rel="stylesheet", href="../stylesheets/pharmacyEmployeeProfile.css")
+  div(id="NameBox")
+  div(id="logo")
+  div(id="navbarbox")
+   div(id="inventoryBox")
+    form(action="/pharmacy",method="get")
+          input(type="submit",value="Home",id="button")
+   div(id="notificationBox")
+    form(action="/pharmacy/profile",method="get")
+          input(type="submit",value="Admin Profile",id="button")
+   div(id="profileBox")   
+     form(action="/pharmacy/pharmacyprofile",method="get")
+          input(type="submit",value="Pharmacy Profile",id="button")
+   div(id="employeeBox")   
+      form(action="/pharmacy/employeeprofile",method="get")
+          input(type="submit",value="Employee Profile",id="button")
+
+  div(id="ProfileBox")
+    form(action="/pharmacy/employeeprofile", method="POST")
+      div(id="pharmacy")
+       label(for="pharmacy") Pharmacy Name
+       input(type="text", placeholder="Pharmacy Name", name="pharmacy")
+      div(id="Type")
+       label(for="type") Type
+       input(type="text", placeholder="Type", name="type")
+      div(id="Branch")
+       label(for="branch") Branch    
+       input(type="text", placeholder="Branch", name="branch")
+      div(id="city")
+       label(for="city") City
+       input(type="text", placeholder="City", name="city")
+      div(id="subcity")
+       label(for="subcity") Subcity
+       input(type="text", placeholder="subcity", name="subcity")
+      div(id="woreda")
+       label(for="woreda") Woreda
+       input(type="text", placeholder="Woreda", name="woreda")
+      div(id="phone")
+       label(for="phone") Phone
+       input(type="text", placeholder="PhoneNo", name="phone")
+      div(id="email")
+       label(for="email") Email
+       input(type="text", placeholder="email", name="email")
+      div(id="pobox")
+       label(for="pobox") PoBox
+       input(type="text", placeholder="pobox", name="pobox")
+      div(id="buttons") 
+       button(type="submit") Save
