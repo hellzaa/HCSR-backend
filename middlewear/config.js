@@ -1,3 +1,3 @@
 module.exports = {
-  secret: 'hellza'
+  secret: 'Your token secret'
 };

@@ -130,7 +130,7 @@ bcrypt.compare(logininfo.password,rows[0].Password, function(err, result){
 			var sessiondata={UserInfo:rows[0]};
 			console.log(sessiondata);
 			const payload= {sessiondata};
-			const token=jwt.sign(payload,"hellza",{expiresIn:'1h'});
+			
 			authorized={isAuthorized:true, token:token}
 
 		}
@@ -186,7 +186,7 @@ UserData.get_login_info= function(logininfo, result){
 				//var sessiondata={UserInfo:rows[0]};
 				console.log(sessiondata);
 				const payload= {sessiondata};
-				const token=jwt.sign(payload,"hellza",{expiresIn:'1h'});
+				const token=jwt.sign(payload,"YOUR JWT SECRET",{expiresIn:'1h'});
 				authorized={isAuthorized:true, token:token}
 	
 			}
@@ -486,7 +486,7 @@ console.log(result);
 			var sessiondata={userID: rows[0].UserID, Firstname:rows[0].Firstname, Lastname:rows[0].Lastname, Username:rows[0].Username, Password:rows[0].Password};
 			//console.log(sessiondata);
 			//const payload= {sessiondata};
-			//const token=jwt.sign(payload,"hellza",{expiresIn:'1h'});
+			
 			authorized={isAuthorized:true, userData: sessiondata };
 
 		}
