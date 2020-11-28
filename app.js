@@ -49,6 +49,9 @@ app.get("/moh", (req, res) => {
   res.send("Welcome to MOH Portal!");
 });
 
+const mohRouter = require('./routes/mohRoutes')
+app.use('/moh', mohRouter)
+
 //Require moh-pharmacy router
 const mohPharmacyRouter = require('./routes/mohPharmacyRoutes')
 //Using as a middleware

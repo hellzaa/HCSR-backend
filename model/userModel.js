@@ -1,5 +1,5 @@
 var mysql= require('mysql');
-var db=require('../server/db');
+var db=require('../server/db/index');
 var bcrypt=require('bcrypt');
 var validate= require('validator');
 var isEmpty= require('is-empty');
@@ -37,16 +37,16 @@ class Database {
 }
 var database=new Database();
 
-var UserData= function(employee){
-this.Firstname= employee.Firstname;
-this.Lastname=employee.Lastname;
-this.Username=employee.Username;
-this.Password=employee.Password;
-this.Institution = employee.Institution;
-this.JobDescription=employee.JobDescription;
-this.Pharmacy = employee.Pharmacy;
-this.Laboratory = employee.Laboratory;
-this.Hospital = employee.Hospital;
+var UserData = function(employee){
+this.Firstname		= employee.Firstname;
+this.Lastname		= employee.Lastname;
+this.Username		= employee.Username;
+this.Password		= employee.Password;
+this.Institution 	= employee.Institution;
+this.JobDescription	= employee.JobDescription;
+this.Pharmacy 		= employee.Pharmacy;
+this.Laboratory 	= employee.Laboratory;
+this.Hospital 		= employee.Hospital;
 
 }
 
@@ -94,66 +94,6 @@ console.log(err);
 
 });
 }
-/*
-UserData.get_login_info= function(logininfo, result){
-logininfo.username = !isEmpty(logininfo.username) ? logininfo.username : "";
- logininfo.password= !isEmpty(logininfo.password) ?logininfo.password : "";
-// username checks
-  if (validate.isEmpty(logininfo.username)) {
-   	 isAuthorized=false;
-	 authorized={isAuthorized: false, pharmacy: 0, token: null};
-	 result(null,authorized);
-         
-       
-	  }
-
-  // Password checks
-  if (validate.isEmpty(logininfo.password)) {
-  isAuthorized=false;
- authorized={isAuthorized: false, pharmacy:0, token: null};
-	 result(null,authorized);
-        
-  }
-
-database.query("select Username, Pharmacy from User WHERE Username= ?",logininfo.username).then((rows)=>{
-console.log(rows[0]);
-var values=[rows[0].Username,rows[0].Pharmacy];
- return database.query("SELECT * FROM User inner join Pharmacy on User.Username= ? and Pharmacy.PharmacyID= ?",values);
-}).then((rows,err)=>{
-console.log(rows[0].Password);
-console.log(logininfo.password);
-bcrypt.compare(logininfo.password,rows[0].Password, function(err, result){
-	if(result)
-		{
-
-			var sessiondata={InstitutionID: rows[0].Pharmacy,Institution:rows[0].Institution,UserID: rows[0].UserID, JD:rows[0].JobDescription, InstitutionName:rows[0].PharmacyName};
-			var sessiondata={UserInfo:rows[0]};
-			console.log(sessiondata);
-			const payload= {sessiondata};
-			
-			authorized={isAuthorized:true, token:token}
-
-		}
-	else	
-		{
-			authorized={isAuthorized:false, pharmacy: 0};
-		}
-});
-
-
-
-
-
-
-
-}).then(()=>{
-result(null,authorized);
-}).catch(function(err){
-console.log(err);
-
-});
-}
-*/
 
 UserData.get_login_info= function(logininfo, result){
 	logininfo.Username = !isEmpty(logininfo.Username) ? logininfo.Username : "";
@@ -197,11 +137,7 @@ UserData.get_login_info= function(logininfo, result){
 	});
 	
 	
-	
-	
-	
-	
-	
+		
 	}).then(()=>{
 	result(null,authorized);
 	}).catch(function(err){
@@ -367,11 +303,10 @@ result(null,UserUpdateRow);
 
 };
 
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ MOH Portal @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 UserData.add_moh_user= function(newUser,req, result){
-	//var employeedata=jwt.decode(req.params.employeetoken);
-	//var instID=0;
+
 	var inst="MOH";
-	//console.log(instID);
 	
 	bcrypt.hash(newUser.Password,saltRounds,function(err,hash){
 	var values=[ newUser.Firstname,newUser.Lastname,newUser.Username, hash, newUser.JobDescription,inst];
@@ -384,29 +319,165 @@ UserData.add_moh_user= function(newUser,req, result){
 	});
 	
 	
-	};
+};
 
-UserData.moh_add_pharmacy_admin= function(newUser,req, result){
-	//var employeedata=jwt.decode(req.params.employeetoken);
-	//var instID=0;
-	var inst=req.params.Institution;
-	var pharmacy=req.params.Pharmacy;
-	console.log("Pharmacy ID...");
-	console.log(pharmacy);
-	//console.log(instID);
+UserData.add_pharmacy_admin= function(newUser,req, result){
+	var inst = "Pharmacy";
+	var JD = "Admin";
 		
 	bcrypt.hash(newUser.Password,saltRounds,function(err,hash){
-	var values=[ newUser.Firstname, newUser.Lastname, newUser.Username, hash, newUser.JobDescription,inst, pharmacy];
-	database.query( 'INSERT INTO User ( Firstname, Lastname, Username, Password, JobDescription, Institution, Pharmacy) VALUES (?,?,?,?,?,?,?)',values ).then(rows=>{
-	UserUpdateRow=rows;
-	}).then(()=>{
-	result(null,UserUpdateRow);
-		
+		var values=[ newUser.Firstname, newUser.Lastname, newUser.Username, hash, JD, inst, newUser.Pharmacy];
+		database.query( 'INSERT INTO User ( Firstname, Lastname, Username, Password, JobDescription, Institution, Pharmacy) VALUES (?,?,?,?,?,?,?)',values ).then(rows=>{
+		UserUpdateRow=rows;
+		}).then(()=>{
+		result(null,UserUpdateRow);
+		});
 	});
+};
+
+UserData.add_laboratory_admin= function(newUser,req, result){
+	var inst = "Laboratory";
+	var JD = "Admin";
+		
+	bcrypt.hash(newUser.Password,saltRounds,function(err,hash){
+		var values=[ newUser.Firstname, newUser.Lastname, newUser.Username, hash, JD, inst, newUser.Laboratory];
+		database.query( 'INSERT INTO User ( Firstname, Lastname, Username, Password, JobDescription, Institution, Laboratory) VALUES (?,?,?,?,?,?,?)',values ).then(rows=>{
+		UserUpdateRow=rows;
+		}).then(()=>{
+		result(null,UserUpdateRow);
+		});
 	});
+};
+
+UserData.add_hospital_admin= function(newUser,req, result){
+	var inst = "Hospital";
+	var JD = "Admin";
 		
-		
-	};
+	bcrypt.hash(newUser.Password,saltRounds,function(err,hash){
+		var values=[ newUser.Firstname, newUser.Lastname, newUser.Username, hash, JD, inst, newUser.Hospital];
+		database.query( 'INSERT INTO User ( Firstname, Lastname, Username, Password, JobDescription, Institution, Hospital) VALUES (?,?,?,?,?,?,?)',values ).then(rows=>{
+		UserUpdateRow=rows;
+		}).then(()=>{
+		result(null,UserUpdateRow);
+		});
+	});
+};
+
+UserData.admin_findById = function (UserID, result) {
+    db.query("Select * from User where UserID = ? ", UserID, function (err, res) {
+    if(err) {
+      console.log("error: ", err);
+      result(err, null);
+    }
+    else{
+      result(null, res);
+    }
+});
+
+};
+
+
+UserData.get_all_admins = function(result){
+	
+	db.query("SELECT * from User WHERE JobDescription = 'Admin' ", function(err,res){
+	if(err)
+	{
+		console.log("error: ", err);
+		result(null, err);
+		//console.log(err);
+		//result(err,null);
+	}
+	else{
+		console.log('Admins: ', res);
+		result(null,res);
+	}
+	
+});
+	
+};
+
+
+UserData.pharmacy_admin_update= function(UserID, employee,result){
+	console.log("User Model");
+	console.log(employee);
+
+	bcrypt.hash(employee.Password, saltRounds, function(err,hash){
+			
+	var values=[ employee.Firstname,employee.Lastname,employee.Username, hash, employee.Pharmacy, UserID];
+		database.query('UPDATE User SET Firstname=?, Lastname=?, Username=?, Password=?, Pharmacy where UserID=?',values, function (err, res){
+			if(err){
+				console.log("error: ", err);
+				result(null, err);
+			}else{
+				result(null, res);
+			}
+		}
+	
+
+
+		).then(rows=>{
+			UserUpdateRow=rows;
+		}).then(()=>{
+		result(null,UserUpdateRow);
+		});
+	});
+};
+
+
+UserData.laboratory_admin_update= function(UserID, employee,result){
+	console.log("User Model");
+	console.log(employee);
+
+	bcrypt.hash(employee.Password, saltRounds, function(err,hash){
+			
+	var values=[ employee.Firstname,employee.Lastname,employee.Username, hash, employee.Laboratory, UserID];
+		database.query('UPDATE User SET Firstname=?, Lastname=?, Username=?, Password=?, Laboratory where UserID=?',values, function (err, res){
+			if(err){
+				console.log("error: ", err);
+				result(null, err);
+			}else{
+				result(null, res);
+			}
+		}
+	
+
+
+		).then(rows=>{
+			UserUpdateRow=rows;
+		}).then(()=>{
+		result(null,UserUpdateRow);
+		});
+	});
+};
+
+
+UserData.hospital_admin_update= function(UserID, employee,result){
+	console.log("User Model");
+	console.log(employee);
+
+	bcrypt.hash(employee.Password, saltRounds, function(err,hash){
+			
+	var values=[ employee.Firstname,employee.Lastname,employee.Username, hash, employee.Hospital, UserID];
+		database.query('UPDATE User SET Firstname=?, Lastname=?, Username=?, Password=?, Hospital where UserID=?',values, function (err, res){
+			if(err){
+				console.log("error: ", err);
+				result(null, err);
+			}else{
+				result(null, res);
+			}
+		}
+	
+
+
+		).then(rows=>{
+			UserUpdateRow=rows;
+		}).then(()=>{
+		result(null,UserUpdateRow);
+		});
+	});
+};
+
+
 ///////////////////////////////////////////////////////////////////////////////////
 
 
@@ -541,9 +612,6 @@ UserData.edit_patient_profile= function(updateUser,result){
 console.log(updateUser);
 
 database.query("select * from User WHERE Username= ?",updateUser.OriginalUsername).then((rows)=>{
-
-
-
 //console.log(rows[0]);
 bcrypt.compare(updateUser.PasswordCurrent,rows[0].Password, function(err, result){
 
@@ -560,8 +628,6 @@ bcrypt.hash(updateUser.PasswordNew, saltRounds, function(err,hash){
 		
 		});
 });
-		
-			
 
 		}
 	else	
@@ -571,16 +637,9 @@ console.log("PWD np match");
 		}
 });
 
-
-
-
-
-
 }).then(()=>{
 result(null, UserUpdateRow);
 });
-
-
 };
 
 

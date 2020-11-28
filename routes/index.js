@@ -110,11 +110,6 @@ router.put('/hospital/edithospitalprofile/:employeetoken',hospitalProfileControl
 router.get('/laboratory/searchlabtest/:labtestname/:lat/:long', laboratoryController.search_labtest_request);
 
 
-
-
-router.post('/moh/addmohuser', userController.add_moh_user);
-router.post('/moh/addpharmacyadmin/:PharmacyID', userController.moh_add_pharmacy_admin);
-
 /////////////////////////////////////////////////////////////////////////////////////
 router.post('/loginpatient',userController.get_login_patient);
 

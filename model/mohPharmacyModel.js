@@ -1,20 +1,9 @@
 'use strict';
 var db = require('../server/db/index');
-var bcrypt=require('bcrypt');
-const saltRounds=10;
+//var bcrypt=require('bcrypt');
+//const saltRounds=10;
 //var jwt= require('jsonwebtoken');
 
-
-
-var User = function(user){
-  this.Firstname = user.Firstname;
-  this.Lastname = user.Lastname;
-  this.Username = user.Username;
-  this.Password = user.Password;
-  this.Institution = user.Pharmacy;
-  this.JobDescription = user.JobDescription;
-  this.Pharmacy = user.Pharmacy;
-}
 //Pharmacy object create
 var Pharmacy = function(pharmacy){
 this.PharmacyName    = pharmacy.PharmacyName;
@@ -98,21 +87,7 @@ Pharmacy.delete = function(PharmacyID, result){
 
 };
 
-User.add_admin = function(PharmacyID, user, result){
-  bcrypt.hash(user.Password,saltRounds,function(err,hash){
-  //var values=[ user.Firstname, user.Lastname, user.Username, hash, user.JobDescription, user.Institution, PharmacyID];
-  db.query("INSERT INTO User SET Firstname=?, Lastname=?, Username=?, Password=?, JobDescription=?, Institution=?, Pharmacy=?",[ user.Firstname, user.Lastname, user.Username, hash, user.JobDescription, user.Institution, PharmacyID] ,function (err, res){ 
-  //db.query("INSERT INTO Pharmacy SET ?", PharmacyID, user, function (err, res) {
-    if(err) {
-      console.log("Here")
-      console.log("error: ", err);
-      result(null, err);
-    }else{
-      result(null, res);
-    }
-  });
-  });
-};
 
-module.exports = Pharmacy,User;
+
+module.exports = Pharmacy;
 
