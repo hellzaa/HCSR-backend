@@ -33,15 +33,32 @@ var database = new Database();
 var LabTestData= function(labtest){
 this.LabTestName= labtest.LabTestName;
 this.Description=labtest.Description;
+this.Price=labtest.Price;
 
 }
+LabTestData.get_all_labtests= function(req,result){
+	//const employeedata=jwt.decode(req.params.employeetoken);
+	//const instID=employeedata.sessiondata.Laboratory;
+	//console.log(instID);
+	db.query('select LabTestName from LabTest', function(err,res){
+	if(err)
+	{
+	console.log(err);
+	result(err,null);
+	}
+	else{
+	//console.log(res);
+	result(null,res);
+	}
+	});
 
+}
 //Fetch(Get) Inventory... Labtest list
 LabTestData.get_labtest= function(req, result){
 const employeedata=jwt.decode(req.params.employeetoken);
-const instID=employeedata.sessiondata.InstitutionID;
+const instID=employeedata.sessiondata.Laboratory;
 console.log(instID);
-db.query('select * from LaboratoryProvides inner join LabTest ON LabTest.LabTestID = LaboratoryProvides.LabTestID where LabId = ?',instID, function(err,res){
+db.query('select LabTestName, LaboratoryProvides.LabTestID, LaboratoryProvides.Description, Price from LaboratoryProvides inner join LabTest ON LabTest.LabTestID = LaboratoryProvides.LabTestID where LabId = ?',instID, function(err,res){
 if(err)
 {
 console.log(err);
@@ -75,18 +92,18 @@ LabTestData.add_new_labtest= function(req, newLabTest, result){
 var employeedata=jwt.decode(req.params.employeetoken);
 console.log(employeedata);
 var userID=employeedata.sessiondata.userID;
-var instID=employeedata.sessiondata.InstitutionID;
+var instID=employeedata.sessiondata.Laboratory;
 console.log(instID);
 console.log(userID);
 var LaboratoryTestID;
-var check=[newLabTest.LabTestName, newLabTest.Description];
+var check=[newLabTest.LabTestName, newLabTest.Description, newLabTest.Price];
 console.log(newLabTest);
-database.query("Select LabTestID from LabTest where LabTestName = ? AND Description = ?", check).then(rows=>{
+database.query("Select LabTestID from LabTest where LabTestName = ? ", check).then(rows=>{
 	console.log("found labtest");
 	console.log(rows);
 	
 	console.log(rows.length);
-	if(rows.length===0)
+	/*if(rows.length===0)
 	{
 	
 	 database.query('select Laboratory from User where UserID =?',userID)
@@ -118,8 +135,9 @@ database.query("Select LabTestID from LabTest where LabTestName = ? AND Descript
 		});
 
 	}
+	*/
 
-	else{
+	//else{
 
 console.log("here is the ID of the exisiting labtest");
 LaboratoryTestID=rows[0].LabTestID;
@@ -129,8 +147,8 @@ console.log(LaboratoryTestID);
 	
 		
 
-		var value=[instID, LaboratoryTestID, newLabTest.Description];
-		database.query('INSERT INTO LaboratoryProvides (LabID, LabTestID, Description) VALUES (?,?,?)',value ).then(rows=>{
+		var value=[instID, LaboratoryTestID, newLabTest.Description, parseFloat(newLabTest.Price)];
+		database.query('INSERT INTO LaboratoryProvides (LabID, LabTestID, Description, Price) VALUES (?,?,?,?)',value ).then(rows=>{
 			
 					LabTestDataRow=rows;
 				
@@ -143,14 +161,10 @@ console.log(LaboratoryTestID);
 
 
 		
-	}
+	//}
 });
 
-
-
-
-};
-
+}
 //Edit labtest data
 LabTestData.edit_labtest=function(req,newLabTest,result){
 var labtestData=jwt.decode(req.params.labtesttoken);

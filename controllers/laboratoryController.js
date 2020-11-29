@@ -1,5 +1,20 @@
 var LabTestData = require('../model/laboratoryModel.js');
 
+
+module.exports.get_all_labtests = function(req, res,next){
+	console.log("recieved req");
+		LabTestData.get_all_labtests(req, function(err,labtest)
+	{
+	
+		if(err)
+			res.send(err);
+		//console.log('res', labtest);
+	res.send(labtest);
+	
+	});
+	}
+
+
 module.exports.get_labtest = function(req, res,next){
 	LabTestData.get_labtest(req, function(err,labtest)
 {

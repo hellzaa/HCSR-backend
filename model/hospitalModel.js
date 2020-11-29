@@ -2,6 +2,7 @@ var mysql= require('mysql');
 var db=require('../server/db');
 var jwt= require('jsonwebtoken');
 var SpecialistDataRow;
+var SpecialistInfo=[];
 var SpecialistUpdateRow;
 var HospitalData;
 //var distance;
@@ -35,13 +36,14 @@ this.Title = specialist.Title;
 this.FirstName = specialist.FirstName;
 this.LastName = specialist.LastName;
 this.Speciality =specialist.Speciality;
-
+this.WorkingDay=specialist.WorkingDay;
+this.WorkingHour=specialist.WorkingHour;
 }
 
 //Fetch(Get) Inventory... Specialist list
 SpecialistData.get_specialist = function(req, result){
 const employeedata=jwt.decode(req.params.employeetoken);
-const instID=employeedata.sessiondata.InstitutionID;
+const instID=employeedata.sessiondata.Hospital;
 console.log(instID);
 db.query('select * from SpecialistWorksIn inner join Specialist ON Specialist.SpecID = SpecialistWorksIn.SpecID where HospID = ?',instID, function(err,res){
 if(err)
@@ -55,6 +57,17 @@ result(null,res);
 }
 });
 };
+
+SpecialistData.get_all_specialist= function(req, result){
+db.query('select SpecID, Title, FirstName, LastName, Speciality from Specialist', function(err,res){
+for(var i=0; i<res.length; i++)
+	SpecialistInfo.push({SpecID: res[i]["SpecID"], SpecialistInfo: res[i]["Title"].concat(" ").concat(res[i]["FirstName"]).concat(" ").concat(res[i]["LastName"]), Speciality: res[i]["Speciality"]})
+console.log(SpecialistInfo);
+
+result(null,SpecialistInfo);
+});
+};
+
 
 //Get specialist info
 SpecialistData.get_specialist_info= function(req, result){
@@ -72,23 +85,25 @@ result(null,res);
 };
 
 //Add new specialist
-SpecialistData.add_new_specialist= function(req, newSpecialist, result){
-
+SpecialistData.add_new_specialist= function(req, result){
+var SpecInfo=req.body;
 var employeedata=jwt.decode(req.params.employeetoken);
 console.log(employeedata);
 var userID=employeedata.sessiondata.userID;
-var instID=employeedata.sessiondata.InstitutionID;
+var instID=employeedata.sessiondata.Hospital;
 console.log(instID);
 console.log(userID);
 var HospSpecialistID;
-var check=[newSpecialist.Title, newSpecialist.FirstName, newSpecialist.LastName, newSpecialist.Speciality];
-console.log(newSpecialist);
-database.query("Select SpecID from Specialist where Title = ? AND FirstName = ? AND LastName = ? AND Speciality = ?", check).then(rows=>{
+
+console.log(SpecInfo);
+var check=[SpecInfo["SpecialistInfo"].split(" ")[0],SpecInfo["SpecialistInfo"].split(" ")[1],SpecInfo["SpecialistInfo"].split(" ")[2]];
+console.log(check);
+database.query("Select SpecID from Specialist where Title = ? AND FirstName = ? AND LastName = ?", check).then(rows=>{
 	console.log("found specialist");
 	console.log(rows);
 	
 	console.log(rows.length);
-	if(rows.length===0)
+	/*if(rows.length===0)
 	{
 	
 	 database.query('select Hospital from User where UserID =?',userID)
@@ -121,7 +136,7 @@ database.query("Select SpecID from Specialist where Title = ? AND FirstName = ? 
 
 	}
 
-	else{
+	*///else{
 
 console.log("here is the ID of the exisiting specialist");
 HospSpecialistID=rows[0].SpecID;
@@ -131,7 +146,7 @@ console.log(HospSpecialistID);
 	
 		
 
-		var value=[instID, HospSpecialistID, newSpecialist.WorkingDay, newSpecialist.WorkingHour];
+		var value=[instID, HospSpecialistID, SpecInfo["WorkingDay"], SpecInfo["WorkingHour"]];
 		database.query('INSERT INTO SpecialistWorksIn (HospID, SpecID, WorkingDay, WorkingHour) VALUES (?,?,?,?)',value ).then(rows=>{
 			
 					SpecialistDataRow=rows;
@@ -145,7 +160,7 @@ console.log(HospSpecialistID);
 
 
 		
-	}
+	//}
 });
 
 

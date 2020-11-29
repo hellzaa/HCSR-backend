@@ -259,9 +259,11 @@ result(null,res);
 UserData.get_employee_record= function(req, result){
 //console.log(pharmacyID);
 var employeedata=jwt.decode(req.params.employeetoken);
-var instID=employeedata.sessiondata.Pharmacy;
+
 //console.log("Employee record!!!!!!!!!")
 console.log(instID);
+if(employeedata.sessiondata.Institution==="Pharmacy")
+{var instID=employeedata.sessiondata.Pharmacy;
 db.query('select Firstname,Lastname,Username,Password,JobDescription from User where Pharmacy = ?', instID, function(err,res){
 if(err)
 {
@@ -275,20 +277,60 @@ result(null,res);
 }
 
 });
+}
 
+else if (employeedata.sessiondata.Institution==="Laboratory")
+{
+	var instID=employeedata.sessiondata.Laboratory;
+	db.query('select Firstname,Lastname,Username,Password,JobDescription from User where Laboratory = ?', instID, function(err,res){
+	if(err)
+	{
+	
+	console.log(err);
+	result(err,null);
+	}
+	else{
+	//console.log(res);
+	result(null,res);
+	}
+	
+	});
+}
+else if (employeedata.sessiondata.Institution==="Hospital")
+{
+	var instID=employeedata.sessiondata.Hospital;
+	db.query('select Firstname,Lastname,Username,Password,JobDescription from User where Hospital = ?', instID, function(err,res){
+	if(err)
+	{
+	
+	console.log(err);
+	result(err,null);
+	}
+	else{
+	//console.log(res);
+	result(null,res);
+	}
+	
+	});
+}
 };
+
 
 UserData.add_new_employee = function(newUser,req, result){
 var employeedata=jwt.decode(req.params.employeetoken);
 //console.log("Decode token... backend");
 //console.log("Token Data:");
 console.log(employeedata.sessiondata);
+
+if(employeedata.sessiondata.Institution==="Pharmacy")
+{
 var instID = employeedata.sessiondata.Pharmacy;
 //console.log("Adding new employee...");
 var inst = employeedata.sessiondata.Institution;
 //var inst = employeedata.Institution;
 console.log("Adding new employee to pharmacy #");
 console.log(instID);
+
 
 bcrypt.hash(newUser.Password,saltRounds,function(err,hash){
 var values=[ newUser.Firstname,newUser.Lastname,newUser.Username, hash, newUser.JobDescription,inst, instID];
@@ -299,6 +341,52 @@ result(null,UserUpdateRow);
 
 });
 });
+
+}
+else if(employeedata.sessiondata.Institution==="Laboratory")
+{
+var instID = employeedata.sessiondata.Laboratory;
+//console.log("Adding new employee...");
+var inst = employeedata.sessiondata.Institution;
+//var inst = employeedata.Institution;
+console.log("Adding new employee to Laboratory #");
+console.log(instID);
+
+
+bcrypt.hash(newUser.Password,saltRounds,function(err,hash){
+var values=[ newUser.Firstname,newUser.Lastname,newUser.Username, hash, newUser.JobDescription,inst, instID];
+database.query( 'INSERT INTO User ( Firstname, Lastname, Username, Password, JobDescription,Institution,Laboratory) VALUES (?,?,?,?,?,?,?)',values ).then(rows=>{
+UserUpdateRow=rows;
+}).then(()=>{
+result(null,UserUpdateRow);
+
+});
+});
+
+}
+else if(employeedata.sessiondata.Institution==="Hospital")
+{
+var instID = employeedata.sessiondata.Hospital;
+//console.log("Adding new employee...");
+var inst = employeedata.sessiondata.Institution;
+//var inst = employeedata.Institution;
+console.log("Adding new employee to Laboratory #");
+console.log(instID);
+
+
+bcrypt.hash(newUser.Password,saltRounds,function(err,hash){
+var values=[ newUser.Firstname,newUser.Lastname,newUser.Username, hash, newUser.JobDescription,inst, instID];
+database.query( 'INSERT INTO User ( Firstname, Lastname, Username, Password, JobDescription,Institution,Hospital) VALUES (?,?,?,?,?,?,?)',values ).then(rows=>{
+UserUpdateRow=rows;
+}).then(()=>{
+result(null,UserUpdateRow);
+
+});
+});
+
+}
+
+
 
 
 };

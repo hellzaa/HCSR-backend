@@ -1,5 +1,19 @@
 var SpecialistData = require('../model/hospitalModel.js');
 
+
+module.exports.get_all_specialist = function(req, res,next){
+	SpecialistData.get_all_specialist(req, function(err,specialist)
+{
+
+	if(err)
+		res.send(err);
+	//console.log('res', specialist);
+res.send(specialist);
+
+});
+}
+
+
 module.exports.get_specialist = function(req, res,next){
 	SpecialistData.get_specialist(req, function(err,specialist)
 {
@@ -29,15 +43,8 @@ module.exports.add_new_specialist=function(req, res){
 //console.log(req.params.employeetoken);
 
 
-var new_specialist = new SpecialistData(req.body);
-if(!new_specialist.FirstName||!new_specialist.LastName ||!new_specialist.Speciality)
-	{
 
-		res.status(400).send({error: true, message:"enter name and speciality"});
-	}
-else	{
-
-		SpecialistData.add_new_specialist(req, new_specialist, function(err, specialist)
+		SpecialistData.add_new_specialist(req, function(err, specialist)
 			{
 
 				if(err)
@@ -45,7 +52,7 @@ else	{
 				res.json(specialist);
 			});
 
-	}
+	
 
 };
 

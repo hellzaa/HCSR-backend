@@ -48,6 +48,9 @@ router.get('/pharmacy/searchmed/:medname/:lat/:long', pharmacyController.search_
 //################################################################################################################
 //################################################################################################################
 
+router.get('/laboratory/getalllabtest/:employeetoken', laboratoryController.get_all_labtests);
+
+
 router.post('/laboratory/addnewuserprofile', userController.add_new_user);
 //router.get('/pharmacy/pharmacylogin',employeeController.get_login_info);
 
@@ -82,6 +85,7 @@ router.get('/laboratory/searchlabtest/:labtestname/:lat/:long', laboratoryContro
 //################################################################################################################
 
 router.post('/hospital/addnewuserprofile', userController.add_new_user);
+router.get('/hospital/getallspecialist/:employeetoken', hospitalController.get_all_specialist);
 //router.get('/pharmacy/pharmacylogin',employeeController.get_login_info);
 
 router.get('/hospital/specialist/:employeetoken', hospitalController.get_specialist);
