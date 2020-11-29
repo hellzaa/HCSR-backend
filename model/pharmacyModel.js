@@ -4,6 +4,7 @@ var jwt= require('jsonwebtoken');
 var MedicineDataRow;
 var MedicineUpdateRow;
 var PharmacyData;
+const {spawn}= require('child_process');
 //var distance;
 class Database {
     constructor( ) {
@@ -74,6 +75,29 @@ result(null,res);
 });
 };
 
+
+
+MedicineData.prefill_medicine_info= function(req, newMedicine, result){
+ 
+ var largeDataSet=[];
+ // spawn new child process to call the python script
+ const python = spawn('python', ["./barcode.py"]);
+ // collect data from script
+ python.stdout.on('data', function (data) {
+  console.log('Pipe data from python script ...');
+  largeDataSet.push(data);
+ });
+ // in close event we are sure that stream is from child process is closed
+ python.on('close', (code) => {
+ console.log(`child process close all stdio with code ${code}`);
+ // send data to browser
+ result(null,largeDataSet.join(""));
+ });
+
+
+
+};
+
 //Add new medicine
 MedicineData.add_new_medicine= function(req, newMedicine, result){
 
@@ -92,7 +116,7 @@ database.query("Select MedID from Medicine where GenericName = ? AND TradeName =
 	console.log(rows);
 	
 	console.log(rows.length);
-	if(rows.length === 0)
+	/*if(rows.length === 0)
 	{
 	
 	 database.query('select Pharmacy from User where UserID =?',UserID)
@@ -128,12 +152,12 @@ database.query("Select MedID from Medicine where GenericName = ? AND TradeName =
 			result(null,MedicineDataRow);
 			
 			});
-		*/
+		
 		
 	}
 
 	else{
-
+*/
 console.log("here is the ID of the exisiting med");
 MedicineID=rows[0].MedID;
 console.log(MedicineID);
@@ -156,7 +180,7 @@ console.log(MedicineID);
 
 
 		
-	}
+	//}
 });
 
 

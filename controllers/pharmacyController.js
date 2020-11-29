@@ -30,12 +30,7 @@ module.exports.add_new_medicine=function(req, res){
 
 
 var new_medicine= new MedicineData(req.body);
-if(!new_medicine.GenericName||!new_medicine.Amount||!new_medicine.Price)
-	{
 
-		res.status(400).send({error: true, message:"enter amount and price"});
-	}
-else	{
 
 		MedicineData.add_new_medicine(req, new_medicine, function(err, medicine)
 			{
@@ -45,7 +40,26 @@ else	{
 				res.json(medicine);
 			});
 
-	}
+	
+
+};
+
+module.exports.prefill_medicine_info=function(req, res){
+//console.log(req.params.employeetoken);
+
+
+var new_medicine= new MedicineData(req.body);
+
+
+		MedicineData.prefill_medicine_info(req, new_medicine, function(err, medicine)
+			{
+
+				if(err)
+					res.send(err);
+				res.json(medicine);
+			});
+
+	
 
 };
 

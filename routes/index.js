@@ -11,6 +11,8 @@ var laboratoryProfileController = require('../controllers/laboratoryProfileContr
 var hospitalController = require('../controllers/hospitalController');
 var hospitalProfileController = require('../controllers/hospitalProfileController');
 
+
+
 router.post('/login',userController.get_login_info);
 //router.post('/loginpatient/:username',userController.get_login_patient);
 //router.post('/signup',userController.add_new_user_patient);
@@ -43,6 +45,7 @@ router.put('/pharmacy/editpharmacyprofile/:employeetoken',pharmacyProfileControl
 //router.delete('/pharmacy/removepharmacyprofile',pharmacyProfileController.remove_pharmacy_profile);
 
 router.get('/pharmacy/searchmed/:medname/:lat/:long', pharmacyController.search_med_request);
+router.get('/pharmacy/callqrreader/:employeetoken', pharmacyController.prefill_medicine_info);
 
 //################################################################################################################
 //################################################################################################################
