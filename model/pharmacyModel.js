@@ -1,3 +1,4 @@
+const {PythonShell} = require('python-shell');
 var mysql= require('mysql');
 var db=require('../server/db');
 var jwt= require('jsonwebtoken');
@@ -5,10 +6,13 @@ var MedicineDataRow;
 var MedicineUpdateRow;
 var PharmacyData;
 const {spawn}= require('child_process');
+
+
+//let pyshell= new PythonShell('barcode.py');
 //var distance;
 class Database {
     constructor( ) {
-        this.connection = mysql.createConnection( { password: '' , user: 'root' , database: 'HCSR' , host: 'localhost', port:'3307'});
+        this.connection = mysql.createConnection( { password: '' , user: 'root' , database: 'HCSR' , host: 'localhost', port:'3306'});
     }
     query( sql, args ) {
         return new Promise( ( resolve, reject ) => {
@@ -77,24 +81,50 @@ result(null,res);
 
 
 
-MedicineData.prefill_medicine_info= function(req, newMedicine, result){
- 
+MedicineData.prefill_medicine_info=  function(req, newMedicine, result){
+
+PythonShell.run('barcode.py',null, function(err,results){
+scannedID=JSON.parse(results)["MedID"];
+database.query("Select GenericName, TradeName, Dosage, Description from Medicine where MedID = ?", scannedID).then(rows=>{
+console.log(rows[0]);
+fetchedMed=rows[0];
+}).then(()=>{
+console.log(fetchedMed);
+result(null,fetchedMed);
+});
+});
+
+
+
+/*
+
  var largeDataSet=[];
+var scannedID;
+var fetchedMed=[];
  // spawn new child process to call the python script
  const python = spawn('python', ["./barcode.py"]);
  // collect data from script
- python.stdout.on('data', function (data) {
+ python.stdout.on('data',  function (data) {
   console.log('Pipe data from python script ...');
   largeDataSet.push(data);
  });
+
  // in close event we are sure that stream is from child process is closed
- python.on('close', (code) => {
- console.log(`child process close all stdio with code ${code}`);
+ python.on('exit', (exitCode) => {
+  console.log(`child process close all stdio with code ${exitCode}`);
  // send data to browser
- result(null,largeDataSet.join(""));
+//scannedID=JSON.parse(largeDataSet.join(""))["MedID"];
+database.query("Select GenericName, TradeName, Dosage, Description from Medicine where MedID = ?", 23).then(rows=>{
+console.log(rows[0]);
+fetchedMed=rows[0];
+}).then(()=>{
+console.log(fetchedMed);
+result(null,fetchedMed);
+});
+ 
  });
 
-
+*/
 
 };
 

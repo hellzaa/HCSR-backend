@@ -5,7 +5,7 @@ var jwt= require('jsonwebtoken');
 var HospitalUpdateRow;
 class Database {
     constructor( ) {
-        this.connection = mysql.createConnection( { password: '' , user: 'root' , database: 'HCSR' , host: 'localhost', port:'3307'});
+        this.connection = mysql.createConnection( { password: '' , user: 'root' , database: 'HCSR' , host: 'localhost', port:'3306'});
     }
     query( sql, args ) {
         return new Promise( ( resolve, reject ) => {
