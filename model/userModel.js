@@ -122,7 +122,7 @@ UserData.get_login_info= function(logininfo, result){
 		if(result)
 			{
 	
-				var sessiondata={UserID:rows[0].UserID, Firstname:rows[0].Firstname, Lastname:rows[0].Lastname, Username:rows[0].Username, Pharmacy:rows[0].Pharmacy, Laboratory:rows[0].Laboratory, Hospital:rows[0].Hospital, Institution:rows[0].Institution, JobDescription:rows[0].JobDescription};
+				var sessiondata={UserID:rows[0].UserID, Firstname:rows[0].Firstname, Lastname:rows[0].Lastname, Username:rows[0].Username, Password:rows[0].Password, Pharmacy:rows[0].Pharmacy, Laboratory:rows[0].Laboratory, Hospital:rows[0].Hospital, Institution:rows[0].Institution, JobDescription:rows[0].JobDescription};
 				//var sessiondata={UserInfo:rows[0]};
 				console.log(sessiondata);
 				const payload= {sessiondata};
@@ -226,17 +226,20 @@ console.log(req.params.employeetoken);
 var employeedata=jwt.decode(req.params.employeetoken);
 var UserID=employeedata.sessiondata.UserID;
 console.log(employeedata.sessiondata);
-var values=[newEmployee.Firstname,newEmployee.Lastname,newEmployee.Username, newEmployee.Password,newEmployee.JobDescription,UserID];
-console.log(newEmployee.Firstname);
+bcrypt.hash(newEmployee.Password, saltRounds, function(err,hash){
+var values=[newEmployee.Firstname,newEmployee.Lastname,newEmployee.Username, hash, newEmployee.JobDescription,UserID];
+//console.log(newEmployee.Firstname);
 console.log(UserID);
 database.query( 'UPDATE User SET Firstname =? , Lastname =?, Username =?, Password =?, JobDescription =? WHERE UserID =?',values ).then(rows=>{
 EmployeeUpdateRow=rows;
+console.log("Values");
+console.log(values);
 }).then(()=>{
 result(null,EmployeeUpdateRow);
 
 });
 
-
+});
 };
 
 

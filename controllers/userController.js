@@ -84,7 +84,8 @@ res.json(user);
 
 };
 module.exports.edit_profile=function(req,res){
-
+	console.log("Controller request body");
+	console.log(req.body);
 UserData.edit_profile(new UserData(req.body),req, function(err,user){
 if(err)
  res.send(err);
